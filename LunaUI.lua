@@ -13,7 +13,7 @@ local function gs(a)
 end
 
 -- // Variables
-local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('Stats'), gs('ContextActionService')
+local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('ContextActionService')
 local localplayer = players.LocalPlayer
 
 local setByConfig = false
@@ -4574,7 +4574,6 @@ function library:init()
                 {"Private", true},
                 {self.gamename, true},
                 {'0 fps', true},
-                {'0ms', true},
                 {'00:00:00', true},
                 {'M, D, Y', true},
             };
