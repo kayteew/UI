@@ -13,7 +13,7 @@ local function gs(a)
 end
 
 -- // Variables
-local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('ContextActionService')
+local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('Stats'), gs('ContextActionService')
 local localplayer = players.LocalPlayer
 
 local setByConfig = false
@@ -4574,6 +4574,7 @@ function library:init()
                 {"Private", true},
                 {self.gamename, true},
                 {'0 fps', true},
+                {'0ms', true},
                 {'00:00:00', true},
                 {'M, D, Y', true},
             };
@@ -4668,6 +4669,19 @@ function library:init()
             })
 
         end
+    end
+
+    local lasttick = tick();
+    utility:Connection(runservice.RenderStepped, function(step)
+        library.stats.fps = floor(1/step)
+        library.stats.ping = stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+        library.stats.sendkbps = stats.DataSendKbps
+        library.stats.receivekbps = stats.DataReceiveKbps
+
+        if (tick()-lasttick)*1000 > library.watermark.refreshrate then
+            lasttick = tick()
+            library.watermark:Update()
+        end
     end)
 
     self.keyIndicator = self.NewIndicator({title = 'Keybinds', pos = newUDim2(0,15,0,325), enabled = true});
@@ -4728,6 +4742,37 @@ function library:CreateSettingsTab(menu)
     mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.End, callback = function()
         library:SetOpen(not library.open)
     end});
+
+    mainSection:AddButton({text = 'Join Discord', flag = 'joindiscord', confirm = true, callback = function()
+        local res = syn.request({
+            Url = 'https://discord.gg/rkRW5VrbWu',
+            Method = 'POST',
+            Headers = {
+                ['Content-Type'] = 'application/json',
+                Origin = 'https://discord.com'
+            },
+            Body = game:GetService('HttpService'):JSONEncode({
+                cmd = 'INVITE_BROWSER',
+                nonce = game:GetService('HttpService'):GenerateGUID(false),
+                args = {code = 'rkRW5VrbWu'}
+            })
+        })
+        if res.Success then
+            library:SendNotification(library.cheatname..' | Joined Discord', 3);
+        end
+    end})
+
+    mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
+    end})
+
+    mainSection:AddButton({text = 'Rejoin Game', confirm = true, callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId);
+    end})
+
+    mainSection:AddButton({text = 'Copy Join Script', callback = function()
+        setclipboard(([[game:GetService("TeleportService"):TeleportToPlaceInstance(%s, "%s")]]):format(game.PlaceId, game.JobId))
+    end})
 
     mainSection:AddButton({text = "Unload", confirm = true,
        callback = function(bool)
