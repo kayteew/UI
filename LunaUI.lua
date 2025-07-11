@@ -13,7 +13,7 @@ local function gs(a)
 end
 
 -- // Variables
-local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('Stats'), gs('ContextActionService')
+local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('ContextActionService')
 local localplayer = players.LocalPlayer
 
 local setByConfig = false
