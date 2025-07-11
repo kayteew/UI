@@ -13,7 +13,7 @@ local function gs(a)
 end
 
 -- // Variables
-local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('ContextActionService')
+local players, http, runservice, inputservice, tweenService, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('ContextActionService')
 local localplayer = players.LocalPlayer
 
 local setByConfig = false
@@ -4670,20 +4670,20 @@ function library:init()
 
         end
     end
-[[--
+
     local lasttick = tick();
     utility:Connection(runservice.RenderStepped, function(step)
         library.stats.fps = floor(1/step)
-        library.stats.ping = stats.Network.ServerStatsItem["Data Ping"]:GetValue()
-        library.stats.sendkbps = stats.DataSendKbps
-        library.stats.receivekbps = stats.DataReceiveKbps
+        --library.stats.ping = stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+        --library.stats.sendkbps = stats.DataSendKbps
+        --library.stats.receivekbps = stats.DataReceiveKbps
 
         if (tick()-lasttick)*1000 > library.watermark.refreshrate then
             lasttick = tick()
             library.watermark:Update()
         end
     end)
-]]--
+
     self.keyIndicator = self.NewIndicator({title = 'Keybinds', pos = newUDim2(0,15,0,325), enabled = true});
     
     self.targetIndicator = self.NewIndicator({title = 'Target Info', pos = newUDim2(0,15,0,350), enabled = false});
