@@ -48,7 +48,7 @@ local library = {
         ['notification'] = 1400;
         ['cursor'] = 1500;
     },
-    stats = {
+     = {
         ['fps'] = 0;
         ['ping'] = 0;
     };
@@ -4670,7 +4670,7 @@ function library:init()
 
         end
     end
-
+[[--
     local lasttick = tick();
     utility:Connection(runservice.RenderStepped, function(step)
         library.stats.fps = floor(1/step)
@@ -4683,7 +4683,7 @@ function library:init()
             library.watermark:Update()
         end
     end)
-
+]]--
     self.keyIndicator = self.NewIndicator({title = 'Keybinds', pos = newUDim2(0,15,0,325), enabled = true});
     
     self.targetIndicator = self.NewIndicator({title = 'Target Info', pos = newUDim2(0,15,0,350), enabled = false});
