@@ -13,7 +13,7 @@ local function gs(a)
 end
 
 -- // Variables
-local players, http, runservice, inputservice, tweenService, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('ContextActionService')
+local players, http, runservice, inputservice, tweenService, stats, actionservice = gs('Players'), gs('HttpService'), gs('RunService'), gs('UserInputService'), gs('TweenService'), gs('Stats'), gs('ContextActionService')
 local localplayer = players.LocalPlayer
 
 local setByConfig = false
@@ -48,7 +48,7 @@ local library = {
         ['notification'] = 1400;
         ['cursor'] = 1500;
     },
-     = {
+    stats = {
         ['fps'] = 0;
         ['ping'] = 0;
     };
@@ -4674,9 +4674,9 @@ function library:init()
     local lasttick = tick();
     utility:Connection(runservice.RenderStepped, function(step)
         library.stats.fps = floor(1/step)
-        --library.stats.ping = stats.Network.ServerStatsItem["Data Ping"]:GetValue()
-        --library.stats.sendkbps = stats.DataSendKbps
-        --library.stats.receivekbps = stats.DataReceiveKbps
+        library.stats.ping = stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+        library.stats.sendkbps = stats.DataSendKbps
+        library.stats.receivekbps = stats.DataReceiveKbps
 
         if (tick()-lasttick)*1000 > library.watermark.refreshrate then
             lasttick = tick()
@@ -4742,7 +4742,7 @@ function library:CreateSettingsTab(menu)
     mainSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.End, callback = function()
         library:SetOpen(not library.open)
     end});
-
+    
     mainSection:AddButton({text = "Unload", confirm = true,
        callback = function(bool)
            if bool then
